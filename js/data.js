@@ -6,45 +6,45 @@
 
 const SECTORS = [
   {
-    id: 'usinagem', name: 'Usinagem', color: '#4aa8ff', x: 40, y: 40, w: 300, h: 260,
+    id: 'usinagem', name: 'Usinagem', color: '#4aa8ff', x: 40, y: 40, w: 300, h: 260, doorSide: 'bottom',
     machines: [
-      { id: 'cnc', name: 'CNC', label: 'CNC', x: 150, y: 130 },
-      { id: 'trn', name: 'Torno', label: 'TRN', x: 280, y: 250 }
+      { id: 'cnc', name: 'CNC', label: 'CNC', x: 150, y: 130, icon: 'gear' },
+      { id: 'trn', name: 'Torno', label: 'TRN', x: 280, y: 250, icon: 'gear' }
     ]
   },
   {
-    id: 'soldagem', name: 'Soldagem', color: '#ff8c42', x: 370, y: 40, w: 300, h: 260,
+    id: 'soldagem', name: 'Soldagem', color: '#ff8c42', x: 370, y: 40, w: 300, h: 260, doorSide: 'bottom',
     machines: [
-      { id: 'mig', name: 'Solda MIG', label: 'MIG', x: 480, y: 130 },
-      { id: 'tig', name: 'Solda TIG', label: 'TIG', x: 610, y: 250 }
+      { id: 'mig', name: 'Solda MIG', label: 'MIG', x: 480, y: 130, icon: 'spark' },
+      { id: 'tig', name: 'Solda TIG', label: 'TIG', x: 610, y: 250, icon: 'spark' }
     ]
   },
   {
-    id: 'eletrica', name: 'Elétrica', color: '#f2c94c', x: 700, y: 40, w: 300, h: 260,
+    id: 'eletrica', name: 'Elétrica', color: '#f2c94c', x: 700, y: 40, w: 300, h: 260, doorSide: 'bottom',
     machines: [
-      { id: 'pwr', name: 'Painel', label: 'PWR', x: 810, y: 130 },
-      { id: 'mtr', name: 'Motor', label: 'MTR', x: 940, y: 250 }
+      { id: 'pwr', name: 'Painel', label: 'PWR', x: 810, y: 130, icon: 'bolt' },
+      { id: 'mtr', name: 'Motor', label: 'MTR', x: 940, y: 250, icon: 'bolt' }
     ]
   },
   {
-    id: 'mecatronica', name: 'Mecatrônica', color: '#b980f0', x: 40, y: 360, w: 300, h: 260,
+    id: 'mecatronica', name: 'Mecatrônica', color: '#b980f0', x: 40, y: 360, w: 300, h: 260, doorSide: 'top',
     machines: [
-      { id: 'rob', name: 'Robô', label: 'ROB', x: 150, y: 450 },
-      { id: 'srv1', name: 'Servo', label: 'SRV', x: 280, y: 570 }
+      { id: 'rob', name: 'Robô', label: 'ROB', x: 150, y: 450, icon: 'arm' },
+      { id: 'srv1', name: 'Servo', label: 'SRV', x: 280, y: 570, icon: 'arm' }
     ]
   },
   {
-    id: 'informatica', name: 'Informática', color: '#4ecdc4', x: 370, y: 360, w: 300, h: 260,
+    id: 'informatica', name: 'Informática', color: '#4ecdc4', x: 370, y: 360, w: 300, h: 260, doorSide: 'top',
     machines: [
-      { id: 'srv2', name: 'Servidor', label: 'SRV', x: 480, y: 450 },
-      { id: 'plc', name: 'CLP/PLC', label: 'PLC', x: 610, y: 570 }
+      { id: 'srv2', name: 'Servidor', label: 'SRV', x: 480, y: 450, icon: 'monitor' },
+      { id: 'plc', name: 'CLP/PLC', label: 'PLC', x: 610, y: 570, icon: 'monitor' }
     ]
   },
   {
-    id: 'automacao', name: 'Automação', color: '#6bcf7f', x: 700, y: 360, w: 300, h: 260,
+    id: 'automacao', name: 'Automação', color: '#6bcf7f', x: 700, y: 360, w: 300, h: 260, doorSide: 'top',
     machines: [
-      { id: 'sen', name: 'Sensor', label: 'SEN', x: 810, y: 450 },
-      { id: 'est', name: 'Esteira', label: 'EST', x: 940, y: 570 }
+      { id: 'sen', name: 'Sensor', label: 'SEN', x: 810, y: 450, icon: 'conveyor' },
+      { id: 'est', name: 'Esteira', label: 'EST', x: 940, y: 570, icon: 'conveyor' }
     ]
   }
 ];
@@ -103,5 +103,9 @@ const GAME_CONFIG = {
   questionTimeSeconds: 12,
   pointsCorrect: 100,
   worldWidth: 1000,
-  worldHeight: 660
+  worldHeight: 660,
+  wallThickness: 8,
+  doorGap: 100,
+  rankingKey: 'factoryQuestRanking',
+  rankingMaxEntries: 10
 };

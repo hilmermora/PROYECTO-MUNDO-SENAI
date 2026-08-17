@@ -135,6 +135,41 @@ h1 { margin: 0 0 8px; font-size: 34px; line-height: 1.1; }
 .btn-primary:hover { background: #ffab3d; }
 .btn-primary:active { transform: scale(0.98); }
 
+.btn-secondary {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-dim);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color .12s ease, color .12s ease;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- Ranking ---------- */
+.ranking-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; max-height: 320px; overflow-y: auto; }
+.ranking-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 60px 70px;
+  align-items: center;
+  gap: 8px;
+  background: #0b1120;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+.ranking-row:first-child { border-color: var(--accent-dark); }
+.ranking-pos { color: var(--accent); font-weight: 800; }
+.ranking-name { color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ranking-missions { color: var(--text-dim); font-size: 12px; }
+.ranking-score { color: var(--success); font-weight: 700; text-align: right; }
+.ranking-empty { color: var(--text-dim); font-size: 13px; text-align: center; padding: 20px 0; }
+
 /* ---------- HUD ---------- */
 #game-screen { flex-direction: column; padding: 0; min-height: 100vh; }
 #hud {

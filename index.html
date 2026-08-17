@@ -38,6 +38,17 @@
       <div class="legend" id="menu-legend"></div>
 
       <button id="btn-start" class="btn-primary">ENTRAR NA FÁBRICA</button>
+      <button id="btn-show-ranking" class="btn-secondary">🏆 VER RANKING</button>
+    </div>
+  </section>
+
+  <!-- RANKING -->
+  <section id="ranking-screen" class="screen hidden">
+    <div class="card">
+      <p class="eyebrow">MELHORES TÉCNICOS</p>
+      <h1>Ranking <span class="accent">Factory Quest</span></h1>
+      <div id="ranking-list" class="ranking-list"></div>
+      <button id="btn-ranking-back" class="btn-primary">VOLTAR</button>
     </div>
   </section>
 
@@ -87,6 +98,7 @@
         <div class="stat-box"><strong id="final-time">0:00</strong><span>Tempo usado</span></div>
       </div>
       <button id="btn-restart" class="btn-primary">JOGAR NOVAMENTE</button>
+      <button id="btn-gameover-ranking" class="btn-secondary">🏆 VER RANKING</button>
     </div>
   </section>
 
@@ -94,6 +106,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
 <script src="js/data.js"></script>
+<script src="js/sound.js"></script>
 <script src="js/game.js"></script>
 <script src="js/app.js"></script>
 </body>

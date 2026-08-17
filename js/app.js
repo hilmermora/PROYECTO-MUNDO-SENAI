@@ -26,6 +26,7 @@ const el = (id) => document.getElementById(id);
 const menuScreen = el('menu-screen');
 const gameScreen = el('game-screen');
 const gameoverScreen = el('gameover-screen');
+const rankingScreen = el('ranking-screen');
 const quizModal = el('quiz-modal');
 
 function formatTime(totalSeconds) {
@@ -52,6 +53,7 @@ el('stat-sectors').textContent = SECTORS.length;
 buildLegend();
 
 el('btn-start').addEventListener('click', () => {
+  window.Sound.unlock();
   window.gameState = freshState();
   window.gameState.name = el('player-name').value.trim();
   menuScreen.classList.add('hidden');
@@ -66,6 +68,65 @@ el('btn-restart').addEventListener('click', () => {
   gameoverScreen.classList.add('hidden');
   menuScreen.classList.remove('hidden');
 });
+
+el('btn-show-ranking').addEventListener('click', () => showRankingScreen(menuScreen));
+el('btn-ranking-back').addEventListener('click', () => {
+  rankingScreen.classList.add('hidden');
+  rankingScreen.dataset.from === 'gameover' ? gameoverScreen.classList.remove('hidden') : menuScreen.classList.remove('hidden');
+});
+el('btn-gameover-ranking').addEventListener('click', () => showRankingScreen(gameoverScreen));
+
+// ---------- Ranking (localStorage) ----------
+function loadRanking() {
+  try {
+    const raw = localStorage.getItem(GAME_CONFIG.rankingKey);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveScoreToRanking(name, score, missionsDone, totalMissions) {
+  const entries = loadRanking();
+  entries.push({
+    name: name || 'Anônimo',
+    score,
+    missions: `${missionsDone}/${totalMissions}`,
+    date: new Date().toLocaleDateString('pt-BR')
+  });
+  entries.sort((a, b) => b.score - a.score);
+  const trimmed = entries.slice(0, GAME_CONFIG.rankingMaxEntries);
+  try {
+    localStorage.setItem(GAME_CONFIG.rankingKey, JSON.stringify(trimmed));
+  } catch (e) { /* localStorage indisponível — ignora silenciosamente */ }
+}
+
+function showRankingScreen(fromScreen) {
+  fromScreen.classList.add('hidden');
+  rankingScreen.dataset.from = fromScreen === gameoverScreen ? 'gameover' : 'menu';
+  rankingScreen.classList.remove('hidden');
+
+  const list = el('ranking-list');
+  const entries = loadRanking();
+  list.innerHTML = '';
+
+  if (entries.length === 0) {
+    list.innerHTML = '<p class="ranking-empty">Nenhuma pontuação registrada ainda. Jogue uma partida!</p>';
+    return;
+  }
+
+  entries.forEach((entry, i) => {
+    const row = document.createElement('div');
+    row.className = 'ranking-row';
+    row.innerHTML = `
+      <span class="ranking-pos">${i + 1}º</span>
+      <span class="ranking-name">${entry.name}</span>
+      <span class="ranking-missions">${entry.missions}</span>
+      <span class="ranking-score">${entry.score} pts</span>
+    `;
+    list.appendChild(row);
+  });
+}
 
 // ---------- HUD ----------
 function updateHud() {
@@ -103,6 +164,7 @@ window.onPickUpNote = function (note) {
   const sector = SECTORS.find((s) => s.id === note.sectorId);
   const machine = sector.machines.find((m) => m.id === note.targetMachineId);
   setMissionText(`Missão: vá até ${machine.label} (${machine.name}) — ${sector.name}`);
+  window.Sound.pickup();
 
   if (window.phaserGame) {
     const scene = window.phaserGame.scene.getScene('FactoryScene');
@@ -203,13 +265,16 @@ function resolveQuiz(isCorrect, sectorId, machine, clickedBtn, question, timedOu
   if (timedOut) {
     feedback.textContent = 'Tempo esgotado!';
     feedback.classList.add('bad');
+    window.Sound.wrong();
   } else if (isCorrect) {
     gs.score += GAME_CONFIG.pointsCorrect;
     feedback.textContent = `Correto! +${GAME_CONFIG.pointsCorrect} pts`;
     feedback.classList.add('ok');
+    window.Sound.correct();
   } else {
     feedback.textContent = 'Resposta incorreta.';
     feedback.classList.add('bad');
+    window.Sound.wrong();
   }
 
   delete gs.activeMissions[machine.id];
@@ -246,6 +311,11 @@ function endGame(reason) {
     ? 'Fábrica <span class="accent">concluída</span>!'
     : 'Tempo <span class="accent">esgotado</span>';
   el('gameover-eyebrow').textContent = gs.name ? `RESULTADO — ${gs.name}` : 'RESULTADO';
+
+  if (reason === 'complete') window.Sound.gameOverWin();
+  else window.Sound.gameOverTime();
+
+  saveScoreToRanking(gs.name, gs.score, gs.missionsDone, gs.totalMissions);
 
   gameScreen.classList.add('hidden');
   gameoverScreen.classList.remove('hidden');
